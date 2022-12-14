@@ -1,18 +1,18 @@
 import pygame
 from pygame.sprite import Sprite
 
-from dino_runner.utils.constants import RUNNING_HAMMER
-from dino_runner.utils.constants import JUMPING
-from dino_runner.utils.constants import DUCKING
+from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING
+
 
 class Dinosaur(Sprite):
     
     X_POS = 80
     Y_POS = 310
     JUMP_SPEED = 8.5
+    Y_DUCK_POST = 340
 
     def __init__(self):
-        self.image = RUNNING_HAMMER[0]
+        self.image = RUNNING[0]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
@@ -33,8 +33,9 @@ class Dinosaur(Sprite):
         if user_input[pygame.K_UP] and not self.dino_jump:
             self.dino_jump = True
             self.dino_run = False
+            self.dino_duck = False
 
-        if user_input[pygame.K_DOWN]:
+        elif user_input[pygame.K_DOWN] and not self.dino_jump:
             self.dino_run = False   
             self.dino_jump = False
             self.dino_duck = True
@@ -43,7 +44,7 @@ class Dinosaur(Sprite):
             self.step_index = 0
 
     def run(self):
-        self.image = RUNNING_HAMMER[0] if self.step_index < 5 else RUNNING_HAMMER[1]        
+        self.image = RUNNING[0] if self.step_index < 5 else RUNNING[1]        
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
@@ -59,15 +60,13 @@ class Dinosaur(Sprite):
             self.dino_rect.y = self.Y_POS
             self.dino_jump = False
             self.jump_speed = self.JUMP_SPEED
-            self.dino_duck = False
             self.dino_run = True
 
     def duck(self):
         self.image = DUCKING[0] if self.step_index < 5 else DUCKING[1]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
-        self.dino_rect.y = self.Y_POS + 30
-        self.dino_jump = False
+        self.dino_rect.y = self.Y_DUCK_POST
         self.dino_run = True
         self.step_index += 1        
             
