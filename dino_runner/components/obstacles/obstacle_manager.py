@@ -9,6 +9,7 @@ class ObstacleManager:
 
     def __init__(self):
         self.obstacles = []
+        #self.flys = []
 
     def update(self, game):
         self.ramdon = random.randint(0,3)
@@ -20,7 +21,10 @@ class ObstacleManager:
         elif len(self.obstacles) == 0 and self.ramdon == 1:
             cactus = Cactus(LARGE_CACTUS)
             self.obstacles.append(cactus)
-        
+
+        elif len(self.obstacles) == 1 and self.ramdon == 3:
+            aviator = Aviator(BIRD)
+            self.obstacles.append(aviator)
 
         for obstacle in self.obstacles:
             obstacle.update(game.game_speed, self.obstacles)
@@ -28,6 +32,7 @@ class ObstacleManager:
                 pygame.time.delay(1000)
                 game.playing = False
                 break
+
 
     def draw(self, screen):
         for obstacle in self.obstacles:
