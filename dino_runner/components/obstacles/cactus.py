@@ -1,6 +1,6 @@
 import random
 
-from dino_runner.components.obtacles.obstacles import Obstacle
+from dino_runner.components.obstacles.obstacles import Obstacle
 
 
 class Cactus(Obstacle):
