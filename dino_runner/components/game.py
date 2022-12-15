@@ -83,9 +83,7 @@ class Game:
         if self.death_count == 0:
             self.menu.draw(self.screen)
         else:
-            self.menu.update_message(f'''Your score: {self.score.score}
-            highest score: {self.score.MAX_SCORE}
-            Total deaths: {self.death_count}''')
+            self.menu.update_message('Game over. Press any key to restart.',f'Your Score: {self.score.score}',f'Highest Score: {self.score.MAX_SCORE}',f'Total Deaths: {self.death_count}')
             self.menu.draw(self.screen)
 
         self.screen.blit(ICON, (half_screen_width - 50, half_screen_height - 140))
