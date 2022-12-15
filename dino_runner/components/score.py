@@ -3,6 +3,7 @@ import pygame
 from dino_runner.utils.constants import FONT_STYLE
 
 class Score:
+    MAX_SCORE = 0
     def __init__(self):
         self.score = 0
 
@@ -11,7 +12,8 @@ class Score:
 
         if self.score % 100 == 0 and game.game_speed < 500:
             game.game_speed += 5
- 
+        elif self.score > self.MAX_SCORE:
+            self.MAX_SCORE = self.score    
 
     def draw_score(self, screen):
         font = pygame.font.Font(FONT_STYLE, 30)

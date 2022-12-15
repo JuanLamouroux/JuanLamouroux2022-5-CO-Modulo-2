@@ -1,6 +1,6 @@
 import pygame
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONT_STYLE
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
@@ -83,9 +83,11 @@ class Game:
         if self.death_count == 0:
             self.menu.draw(self.screen)
         else:
-            self.menu.update_message('New message')
+            self.menu.update_message(f'''Your score: {self.score.score}
+            highest score: {self.score.MAX_SCORE}
+            Total deaths: {self.death_count}''')
             self.menu.draw(self.screen)
-            pass
+
         self.screen.blit(ICON, (half_screen_width - 50, half_screen_height - 140))
 
 
