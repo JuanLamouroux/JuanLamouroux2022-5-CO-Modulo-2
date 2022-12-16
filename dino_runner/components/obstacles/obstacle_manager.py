@@ -33,7 +33,7 @@ class ObstacleManager:
         if game.player.type != SHIELD_TYPE:
           game.player.dead()
           if game.player.time_dead == 2:
-            pygame.time.delay(1000)
+            pygame.time.delay(500)
             game.playing = False
             game.death_count.count += 1
             break

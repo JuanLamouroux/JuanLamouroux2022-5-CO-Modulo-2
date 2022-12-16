@@ -80,3 +80,11 @@ DINO_START = pygame.image.load(os.path.join(IMG_DIR, 'Dino/DinoStart.png'))
 RESET = pygame.image.load(os.path.join(IMG_DIR, 'Other/Reset.png'))
 
 DEAD = pygame.image.load(os.path.join(IMG_DIR, 'Dino/DinoDead.png'))
+
+GAME_OVER = pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png'))
+
+PLAY = pygame.image.load(os.path.join(IMG_DIR, 'Other/Play.png'))
+
+#SOUND_DEAD = pygame.mixer.music.load(IMG_DIR, 'sound/Muerte.mp3')
+#SOUND_DEAD = pygame.mixer.music.play( )
+

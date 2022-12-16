@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, DINO_START, RESET
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, DINO_START, GAME_OVER, RESET, PLAY
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.menu import Menu
@@ -87,23 +87,20 @@ class Game:
         self.x_pos_bg -= self.game_speed 
         
     def show_menu(self):
-        self.menu.reset_screen_color(self.screen)
         half_screen_height = SCREEN_HEIGHT // 2
         half_screen_width = SCREEN_WIDTH // 2
-        
+
         if self.death_count.count == 0:
+            self.menu.reset_screen_color(self.screen)
             self.menu.draw(self.screen, 'Press any key to start ...')
-            self.screen.blit(ICON, (half_screen_width - 50, half_screen_height - 140))
+            self.screen.blit(PLAY, (half_screen_width - 50, half_screen_height - 140))
         else:
             self.update_highest_score()
-            self.menu.draw(self.screen, 'Game over. Press any key to restart.')
-            self.menu.draw(self.screen, f'Your score: {self.score.count}', half_screen_width, 350)
-            self.menu.draw(self.screen, f'Highest score: {self.highest_score.count}', half_screen_width, 400)
+            self.menu.draw(self.screen, 'Press any key to restart.')
+            self.menu.draw(self.screen, f'Highest score: {self.highest_score.count}', 150, 50)
             self.menu.draw(self.screen, f'Total deaths: {self.death_count.count}', half_screen_width, 450)
-            self.screen.blit(ICON, (half_screen_width - 200, half_screen_height - 140))
-            self.screen.blit(RESET, (half_screen_width + 70, half_screen_height - 110))
-        
-        
+            self.screen.blit(GAME_OVER, (half_screen_width - 180, half_screen_height - 110))
+            self.screen.blit(RESET, (half_screen_width - 50, half_screen_height + 40))
         
         self.menu.update(self)
                 
@@ -126,7 +123,7 @@ class Game:
         if self.player.has_power_up:
             time_to_show = round((self.player.power_time_up - pygame.time.get_ticks() / 1000),2)
             if time_to_show >= 0:
-                self.menu.draw(self.screen, f'{self.player.type.capitalize()} enabled for {time_to_show} seconds', 550, 100)
+                self.menu.draw(self.screen, f'{self.player.type.capitalize()} Time: {time_to_show}', 950, 100)
             else:
                 self.player.has_power_up = False
                 self.player.type = DEFAULT_TYPE
