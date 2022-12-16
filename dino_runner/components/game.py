@@ -1,12 +1,13 @@
 import pygame
+import random
 
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, DINO_START, RESET
-
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.menu import Menu
 from dino_runner.components.counter import Counter
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
+from dino_runner.components.background.background_manager import Background_Manager
 
 
 class Game:
@@ -29,6 +30,7 @@ class Game:
         self.death_count = Counter()
         self.highest_score = Counter()
         self.power_up_manager = PowerUpManager()
+        self.background = Background_Manager()
         
     def execute(self):
         self.running = True
@@ -57,6 +59,7 @@ class Game:
         self.player.update(user_input, self)
         self.power_up_manager.update(self)
         self.obstacle_manager.update(self)
+        self.background.update(self)
         self.score.update()
         self.update_game_speed()
         
@@ -65,6 +68,7 @@ class Game:
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
+        self.background.draw(self.screen)
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
@@ -80,7 +84,7 @@ class Game:
         if self.x_pos_bg <= -image_width:
             self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
-        self.x_pos_bg -= self.game_speed
+        self.x_pos_bg -= self.game_speed 
         
     def show_menu(self):
         self.menu.reset_screen_color(self.screen)
@@ -105,7 +109,7 @@ class Game:
                 
     def update_game_speed(self):
         if self.score.count % 100 == 0 and self.game_speed < 500:
-            self.game_speed += 2
+            self.game_speed += 5
             
     def update_highest_score(self):
         if self.score.count > self.highest_score.count:
