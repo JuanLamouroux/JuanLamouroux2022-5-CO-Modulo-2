@@ -1,11 +1,12 @@
 import pygame
 from pygame.sprite import Sprite
 
-from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING,DEFAULT_TYPE, SHIELD_TYPE,DUCKING_SHIELD,JUMPING_SHIELD,RUNNING_SHIELD
+from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING,DEFAULT_TYPE, SHIELD_TYPE,DUCKING_SHIELD,JUMPING_SHIELD,RUNNING_SHIELD,DEAD
 
 DUCK_IMG = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD}
 JUMP_IMG = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD}
 RUN_IMG = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD}
+DEAD_IMG = {DEFAULT_TYPE: DEAD}
 
 class Dinosaur(Sprite):
   X_POS = 80
@@ -26,33 +27,34 @@ class Dinosaur(Sprite):
     self.jump_speed = self.JUMP_SPEED
     self.has_power_up = False
     self.power_time_up = 0
+    self.time_dead = 0
+
     
-    
-  def update(self, user_input):
+  def update(self, user_input,game):
+    self.game = game
     if self.dino_run:
-      self.run()
+      self.run()       
     elif self.dino_jump:
       self.jump()
     elif self.dino_duck:
-      self.duck()   
+      self.duck()  
 
     if user_input[pygame.K_UP] and not self.dino_jump:
       self.dino_jump = True
       self.dino_run = False
     elif user_input[pygame.K_SPACE] and not self.dino_jump:
-            self.dino_jump = True
-            self.dino_run = False
-            self.dino_duck = False   
+      self.dino_jump = True
+      self.dino_run = False
+      self.dino_duck = False 
     elif user_input[pygame.K_DOWN] and not self.dino_jump:
       self.dino_jump = False
       self.dino_run = False
-      self.dino_duck = True  
+      self.dino_duck = True
     elif not self.dino_jump:
       self.dino_jump = False
       self.dino_duck = False
-      self.dino_run = True
-  
-    
+      self.dino_run = True   
+
     if self.step_index >= 10:
       self.step_index = 0
       
@@ -83,6 +85,11 @@ class Dinosaur(Sprite):
   
   def draw(self, screen):
     screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
+
+  def dead(self):
+    self.image = DEAD_IMG[self.type]
+    self.time_dead += 1
+    
     
   def reset(self):
     self.dino_rect.x = self.X_POS
@@ -93,3 +100,10 @@ class Dinosaur(Sprite):
     self.dino_duck = False
     self.jump_speed = self.JUMP_SPEED
     self.type = DEFAULT_TYPE
+    self.time_dead = 0
+      
+
+
+  
+    
+

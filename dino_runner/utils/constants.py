@@ -2,7 +2,7 @@ import pygame
 import os
 
 # Global Constants
-TITLE = "Chrome Dino Runner"
+TITLE = "Chrome Dino Runner Juan Lamouroux"
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 FPS = 30
@@ -74,3 +74,9 @@ DEFAULT_TYPE = "default"
 FONT_STYLE = 'freesansbold.ttf'
 
 SHIELD_TYPE = 'shield'
+
+DINO_START = pygame.image.load(os.path.join(IMG_DIR, 'Dino/DinoStart.png'))
+
+RESET = pygame.image.load(os.path.join(IMG_DIR, 'Other/Reset.png'))
+
+DEAD = pygame.image.load(os.path.join(IMG_DIR, 'Dino/DinoDead.png'))

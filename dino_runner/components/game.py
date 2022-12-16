@@ -1,6 +1,6 @@
 import pygame
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, DINO_START, RESET
 
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
@@ -14,7 +14,7 @@ class Game:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption(TITLE)
-        pygame.display.set_icon(ICON)
+        pygame.display.set_icon(DINO_START)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.playing = False
@@ -54,10 +54,9 @@ class Game:
 
     def update(self):
         user_input = pygame.key.get_pressed()
-        self.player.update(user_input)
+        self.player.update(user_input, self)
         self.power_up_manager.update(self)
         self.obstacle_manager.update(self)
-        self.draw_power_up_time()
         self.score.update()
         self.update_game_speed()
         
@@ -90,20 +89,23 @@ class Game:
         
         if self.death_count.count == 0:
             self.menu.draw(self.screen, 'Press any key to start ...')
+            self.screen.blit(ICON, (half_screen_width - 50, half_screen_height - 140))
         else:
             self.update_highest_score()
             self.menu.draw(self.screen, 'Game over. Press any key to restart.')
             self.menu.draw(self.screen, f'Your score: {self.score.count}', half_screen_width, 350)
             self.menu.draw(self.screen, f'Highest score: {self.highest_score.count}', half_screen_width, 400)
             self.menu.draw(self.screen, f'Total deaths: {self.death_count.count}', half_screen_width, 450)
+            self.screen.blit(ICON, (half_screen_width - 200, half_screen_height - 140))
+            self.screen.blit(RESET, (half_screen_width + 70, half_screen_height - 110))
         
-        self.screen.blit(ICON, (half_screen_width - 50, half_screen_height - 140))
+        
         
         self.menu.update(self)
                 
     def update_game_speed(self):
         if self.score.count % 100 == 0 and self.game_speed < 500:
-            self.game_speed += 5
+            self.game_speed += 2
             
     def update_highest_score(self):
         if self.score.count > self.highest_score.count:
@@ -111,6 +113,7 @@ class Game:
             
     def reset_game(self):
         self.obstacle_manager.reset_obstacles()
+        self.power_up_manager.reset_power_up()
         self.score.reset()
         self.game_speed = self.GAME_SPEED
         self.player.reset()
